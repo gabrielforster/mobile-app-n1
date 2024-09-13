@@ -1,16 +1,27 @@
-# mobile_app_n1
+# Todo List 
 
-Mobile app for college class
+### Escopo
+Objetivo: Criar uma lista de tarefas onde o usuário pode adicionar, editar,
+e remover tarefas. As tarefas podem ser categorizadas por status 
+(em progresso, concluídas).
 
-## Getting Started
+### Ferramentas que precisam ser utilizadas
+Widgets: Text, ListView, Card
 
-This project is a starting point for a Flutter application.
+Stateful Widget: Para adicionar e remover tarefas, mudar status
 
-A few resources to get you started if this is your first Flutter project:
+Stateless Widget: Para exibir a interface de tarefas (cards ou listas)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Scaffold: Estrutura do app com AppBar e FAB (Floating Action Button) para adicionar tarefas
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+List: Para armazenar e exibir a lista de tarefas
+
+Map: Para armazenar detalhes das tarefas (ex: {'title': 'Estudar', 'status': 'concluída'})
+
+Layout: Organização da lista e formulário de adição de tarefas
+
+Estilização: Personalização dos cards de tarefas, AppBar, e botões
+
+Botões: Botão para adicionar tarefa, marcar como concluída, e excluir
+
+Navegação: Entre tela de listagem de tarefas e tela de detalhes/adicionar tarefa
