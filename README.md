@@ -1,27 +1,21 @@
-# Todo List 
+Nome do Projeto
+Breve descrição do projeto e seus objetivos.
 
-### Escopo
-Objetivo: Criar uma lista de tarefas onde o usuário pode adicionar, editar,
-e remover tarefas. As tarefas podem ser categorizadas por status 
-(em progresso, concluídas).
+Paleta de Cores Escolhida
+Cor	Hex
+#010d23
+#03223f
+#038bbb
+#fccb6f
+#e19f41
 
-### Ferramentas que precisam ser utilizadas
-Widgets: Text, ListView, Card
+O Projeto
+Atualmente, o projeto possui:
 
-Stateful Widget: Para adicionar e remover tarefas, mudar status
+Página inicial com adição de tarefas
+<p align="center">Lista</p>	<p align="center">Adicionando</p>
+Contas Pessoais
+<img src="https://avatars.githubusercontent.com/u/128716535" width="60"/>
 
-Stateless Widget: Para exibir a interface de tarefas (cards ou listas)
+<img src="https://avatars.githubusercontent.com/u/128716535" width="60"/>
 
-Scaffold: Estrutura do app com AppBar e FAB (Floating Action Button) para adicionar tarefas
-
-List: Para armazenar e exibir a lista de tarefas
-
-Map: Para armazenar detalhes das tarefas (ex: {'title': 'Estudar', 'status': 'concluída'})
-
-Layout: Organização da lista e formulário de adição de tarefas
-
-Estilização: Personalização dos cards de tarefas, AppBar, e botões
-
-Botões: Botão para adicionar tarefa, marcar como concluída, e excluir
-
-Navegação: Entre tela de listagem de tarefas e tela de detalhes/adicionar tarefa
