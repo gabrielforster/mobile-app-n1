@@ -1,7 +1,6 @@
-1. Lista de Tarefas (To-Do List)
+# Lista de Tarefas (To-Do List)
 
 Objetivo: Criar uma lista de tarefas onde o usuário pode adicionar, editar, e remover tarefas. As tarefas podem ser categorizadas por status (em progresso, concluídas).
-
 
 Widgets: Text, ListView, Card
 
@@ -22,3 +21,5 @@ Estilização: Personalização dos cards de tarefas, AppBar, e botões
 Botões: Botão para adicionar tarefa, marcar como concluída, e excluir
 
 Navegação: Entre tela de listagem de tarefas e tela de detalhes/adicionar tarefa
+
+# Paleta de cores escolhida por sorteio:
