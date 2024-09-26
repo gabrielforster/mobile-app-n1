@@ -10,9 +10,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Todo List',
+      title: 'To do List',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xFF038BBB),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xFF03223F),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF03223F),
+            side: BorderSide(color: Colors.white),
+            textStyle: TextStyle(color: Colors.white),
+          ),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return Color(0xFFFCCB6F);
+            }
+            return Color(0xFF010D23);
+          }),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Color(0xFF03223F),
+          labelStyle: TextStyle(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white),
+        ),
       ),
       home: const MyHomePage(),
     );
@@ -28,29 +66,93 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _todoController = TextEditingController();
-  List<Todo> _todos = [];
-  bool _filtrarFinalizadas = false;
+  List<Map<String, dynamic>> _todos = [];
+  String _filtro = 'Todas';
 
   void _adicionarTodo() {
     if (_todoController.text.isNotEmpty) {
       setState(() {
-        _todos.add(Todo(_todoController.text, false));
+        _todos.add({'title': _todoController.text, 'status': 'em progresso'});
         _todoController.clear();
       });
     }
   }
 
-  void _filtrarTarefas() {
+  void _editarTodoTitle(int index, String newTitle) {
     setState(() {
-      _filtrarFinalizadas = !_filtrarFinalizadas;
+      _todos[index]['title'] = newTitle;
     });
+  }
+
+  void _mudarStatus(int index, String newStatus) {
+    setState(() {
+      _todos[index]['status'] = newStatus;
+    });
+  }
+
+  void _removerTodo(int index) {
+    setState(() {
+      _todos.removeAt(index);
+    });
+  }
+
+  void _setFiltro(String filtro) {
+    setState(() {
+      _filtro = filtro;
+    });
+  }
+
+  List<Map<String, dynamic>> _filtrarTodos() {
+    if (_filtro == 'Todas') {
+      return _todos;
+    } else {
+      return _todos.where((todo) => todo['status'] == _filtro.toLowerCase()).toList();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo List'),
+        title: const Text('To-Do list'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.white),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor: Color(0xFF010D23),
+                    title: Text('Adicionar Tarefa', style: TextStyle(color: Colors.white)),
+                    content: TextField(
+                      controller: _todoController,
+                      decoration: const InputDecoration(
+                        labelText: 'Título da tarefa',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _adicionarTodo();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Adicionar', style: TextStyle(color: Colors.white)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _todoController.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -60,94 +162,92 @@ class _MyHomePageState extends State<MyHomePage> {
               controller: _todoController,
               decoration: const InputDecoration(
                 labelText: 'Nova tarefa',
-                border: OutlineInputBorder(),
               ),
             ),
           ),
           ElevatedButton(
             onPressed: _adicionarTodo,
-            child: const Text('Adicionar'),
+            child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtrarFinalizadas = false;
-                  });
-                },
-                child: const Text('Todas'),
+                onPressed: () => _setFiltro('Todas'),
+                child: const Text('Todas', style: TextStyle(color: Colors.white)),
               ),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtrarFinalizadas = true;
-                  });
-                },
-                child: const Text('Finalizadas'),
+                onPressed: () => _setFiltro('concluída'),
+                child: const Text('Finalizadas', style: TextStyle(color: Colors.white)),
               ),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _filtrarFinalizadas = false;
-                  });
-                },
-                child: const Text('Não finalizadas'),
+                onPressed: () => _setFiltro('em progresso'),
+                child: const Text('Em Progresso', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
           const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
-              itemCount: _todos.length,
+              itemCount: _filtrarTodos().length,
               itemBuilder: (context, index) {
-                if (_filtrarFinalizadas == null) {
-                  return ListTile(
-                    title: Text(_todos[index].titulo),
-                    trailing: Checkbox(
-                      value: _todos[index].finalizada,
-                      onChanged: (value) {
-                        setState(() {
-                          _todos[index].finalizada = value!;
-                        });
-                      },
+                final todo = _filtrarTodos()[index];
+                return Card(
+                  color: Color(0xFF03223F),
+                  child: ListTile(
+                    title: Text(todo['title'], style: TextStyle(color: Colors.white)),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Checkbox(
+                          value: todo['status'] == 'concluída',
+                          onChanged: (value) {
+                            _mudarStatus(index, value! ? 'concluída' : 'em progresso');
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.white),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                final _editController = TextEditingController(text: todo['title']);
+                                return AlertDialog(
+                                  backgroundColor: Color(0xFF010D23),
+                                  title: Text('Editar Tarefa', style: TextStyle(color: Colors.white)),
+                                  content: TextField(
+                                    controller: _editController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Título da tarefa',
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        _editarTodoTitle(index, _editController.text);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Salvar', style: TextStyle(color: Colors.white)),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.white),
+                          onPressed: () => _removerTodo(index),
+                        ),
+                      ],
                     ),
-                  );
-                } else if (_filtrarFinalizadas) {
-                  if (_todos[index].finalizada) {
-                    return ListTile(
-                      title: Text(_todos[index].titulo),
-                      trailing: Checkbox(
-                        value: _todos[index].finalizada,
-                        onChanged: (value) {
-                          setState(() {
-                            _todos[index].finalizada = value!;
-                          });
-                        },
-                      ),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                } else {
-                  if (!_todos[index].finalizada) {
-                    return ListTile(
-                      title: Text(_todos[index].titulo),
-                      trailing: Checkbox(
-                        value: _todos[index].finalizada,
-                        onChanged: (value) {
-                          setState(() {
-                            _todos[index].finalizada = value!;
-                          });
-                        },
-                      ),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                }
+                  ),
+                );
               },
             ),
           ),
@@ -155,11 +255,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-class Todo {
-  String titulo;
-  bool finalizada;
-
-  Todo(this.titulo, this.finalizada);
 }
