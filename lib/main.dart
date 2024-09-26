@@ -4,6 +4,15 @@ void main() {
   runApp(const MyApp());
 }
 
+extension HexColor on Color {
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'To do List',
       theme: ThemeData(
         primaryColor: Colors.white,
-        scaffoldBackgroundColor: const Color(0xFF038BBB),
+        scaffoldBackgroundColor: HexColor.fromHex('#fccb6f'),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF03223F),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
@@ -26,8 +35,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          fillColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return const Color(0xFFFCCB6F);
             }
             return const Color(0xFF010D23);
@@ -175,7 +184,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? Colors.white
                       : const Color(0xFF03223F),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the radius as needed
                   ),
                 ),
                 child: const Text('Todas'),
@@ -190,7 +200,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? Colors.white
                       : const Color(0xFF03223F),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the radius as needed
                   ),
                 ),
                 child: const Text('Finalizadas'),
@@ -205,7 +216,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? Colors.white
                       : const Color(0xFF03223F),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the radius as needed
                   ),
                 ),
                 child: const Text('Em Progresso'),
@@ -240,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               context: context,
                               builder: (context) {
                                 final editController =
-                                TextEditingController(text: todo['title']);
+                                    TextEditingController(text: todo['title']);
                                 return AlertDialog(
                                   backgroundColor: const Color(0xFF010D23),
                                   title: const Text('Editar Tarefa',
@@ -260,14 +272,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                       },
                                       child: const Text('Salvar',
                                           style:
-                                          TextStyle(color: Colors.white)),
+                                              TextStyle(color: Colors.white)),
                                     ),
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.of(context).pop(),
                                       child: const Text('Cancelar',
                                           style:
-                                          TextStyle(color: Colors.white)),
+                                              TextStyle(color: Colors.white)),
                                     ),
                                   ],
                                 );
