@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,27 +13,27 @@ class MyApp extends StatelessWidget {
       title: 'To do List',
       theme: ThemeData(
         primaryColor: Colors.white,
-        scaffoldBackgroundColor: Color(0xFF038BBB),
-        appBarTheme: AppBarTheme(
+        scaffoldBackgroundColor: const Color(0xFF038BBB),
+        appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF03223F),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF03223F),
-            side: BorderSide(color: Colors.white),
-            textStyle: TextStyle(color: Colors.white),
+            backgroundColor: const Color(0xFF03223F),
+            side: const BorderSide(color: Colors.white),
+            textStyle: const TextStyle(color: Colors.white),
           ),
         ),
         checkboxTheme: CheckboxThemeData(
           fillColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.selected)) {
-              return Color(0xFFFCCB6F);
+              return const Color(0xFFFCCB6F);
             }
-            return Color(0xFF010D23);
+            return const Color(0xFF010D23);
           }),
         ),
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           fillColor: Color(0xFF03223F),
           labelStyle: TextStyle(color: Colors.white),
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white),
           ),
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white),
         ),
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -66,7 +66,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _todoController = TextEditingController();
-  List<Map<String, dynamic>> _todos = [];
+  final List<Map<String, dynamic>> _todos = [];
   String _filtro = 'Todas';
 
   void _adicionarTodo() {
@@ -106,7 +106,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_filtro == 'Todas') {
       return _todos;
     } else {
-      return _todos.where((todo) => todo['status'] == _filtro.toLowerCase()).toList();
+      return _todos
+          .where((todo) => todo['status'] == _filtro.toLowerCase())
+          .toList();
     }
   }
 
@@ -117,14 +119,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('To-Do list'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: Colors.white),
+            icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    backgroundColor: Color(0xFF010D23),
-                    title: Text('Adicionar Tarefa', style: TextStyle(color: Colors.white)),
+                    backgroundColor: const Color(0xFF010D23),
+                    title: const Text('Adicionar Tarefa',
+                        style: TextStyle(color: Colors.white)),
                     content: TextField(
                       controller: _todoController,
                       decoration: const InputDecoration(
@@ -137,14 +140,16 @@ class _MyHomePageState extends State<MyHomePage> {
                           _adicionarTodo();
                           Navigator.of(context).pop();
                         },
-                        child: Text('Adicionar', style: TextStyle(color: Colors.white)),
+                        child: const Text('Adicionar',
+                            style: TextStyle(color: Colors.white)),
                       ),
                       TextButton(
                         onPressed: () {
                           _todoController.clear();
                           Navigator.of(context).pop();
                         },
-                        child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                        child: const Text('Cancelar',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   );
@@ -156,34 +161,54 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _todoController,
-              decoration: const InputDecoration(
-                labelText: 'Nova tarefa',
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _adicionarTodo,
-            child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
-          ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
                 onPressed: () => _setFiltro('Todas'),
-                child: const Text('Todas', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: _filtro == 'Todas'
+                      ? const Color(0xFF03223F)
+                      : Colors.white,
+                  backgroundColor: _filtro == 'Todas'
+                      ? Colors.white
+                      : const Color(0xFF03223F),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                  ),
+                ),
+                child: const Text('Todas'),
               ),
               ElevatedButton(
                 onPressed: () => _setFiltro('concluída'),
-                child: const Text('Finalizadas', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: _filtro == 'concluída'
+                      ? const Color(0xFF03223F)
+                      : Colors.white,
+                  backgroundColor: _filtro == 'concluída'
+                      ? Colors.white
+                      : const Color(0xFF03223F),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                  ),
+                ),
+                child: const Text('Finalizadas'),
               ),
               ElevatedButton(
                 onPressed: () => _setFiltro('em progresso'),
-                child: const Text('Em Progresso', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: _filtro == 'em progresso'
+                      ? const Color(0xFF03223F)
+                      : Colors.white,
+                  backgroundColor: _filtro == 'em progresso'
+                      ? Colors.white
+                      : const Color(0xFF03223F),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
+                  ),
+                ),
+                child: const Text('Em Progresso'),
               ),
             ],
           ),
@@ -194,30 +219,34 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (context, index) {
                 final todo = _filtrarTodos()[index];
                 return Card(
-                  color: Color(0xFF03223F),
+                  color: const Color(0xFF03223F),
                   child: ListTile(
-                    title: Text(todo['title'], style: TextStyle(color: Colors.white)),
+                    title: Text(todo['title'],
+                        style: const TextStyle(color: Colors.white)),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Checkbox(
                           value: todo['status'] == 'concluída',
                           onChanged: (value) {
-                            _mudarStatus(index, value! ? 'concluída' : 'em progresso');
+                            _mudarStatus(
+                                index, value! ? 'concluída' : 'em progresso');
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.edit, color: Colors.white),
+                          icon: const Icon(Icons.edit, color: Colors.white),
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                final _editController = TextEditingController(text: todo['title']);
+                                final editController =
+                                TextEditingController(text: todo['title']);
                                 return AlertDialog(
-                                  backgroundColor: Color(0xFF010D23),
-                                  title: Text('Editar Tarefa', style: TextStyle(color: Colors.white)),
+                                  backgroundColor: const Color(0xFF010D23),
+                                  title: const Text('Editar Tarefa',
+                                      style: TextStyle(color: Colors.white)),
                                   content: TextField(
-                                    controller: _editController,
+                                    controller: editController,
                                     decoration: const InputDecoration(
                                       labelText: 'Título da tarefa',
                                     ),
@@ -225,14 +254,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        _editarTodoTitle(index, _editController.text);
+                                        _editarTodoTitle(
+                                            index, editController.text);
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text('Salvar', style: TextStyle(color: Colors.white)),
+                                      child: const Text('Salvar',
+                                          style:
+                                          TextStyle(color: Colors.white)),
                                     ),
                                     TextButton(
-                                      onPressed: () => Navigator.of(context).pop(),
-                                      child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: const Text('Cancelar',
+                                          style:
+                                          TextStyle(color: Colors.white)),
                                     ),
                                   ],
                                 );
@@ -241,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.white),
+                          icon: const Icon(Icons.delete, color: Colors.white),
                           onPressed: () => _removerTodo(index),
                         ),
                       ],
