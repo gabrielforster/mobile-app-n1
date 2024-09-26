@@ -1,3 +1,9 @@
+# Importando o projeto
+Para importar este projeto basta clonar o repositorio e abri-lo no seu editor preferido.
+```bash
+git clone https://github.com/gabrielforster/mobile-app-n1
+```
+
 # Lista de Tarefas (To-Do List)
 
 Objetivo: Criar uma lista de tarefas onde o usuário pode adicionar, editar, e remover tarefas. As tarefas podem ser categorizadas por status (em progresso, concluídas).
