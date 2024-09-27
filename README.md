@@ -2,6 +2,10 @@
 
 Este é um projeto de um aplicativo de **Lista de Tarefas (Todo List)**, onde os usuários podem adicionar, visualizar, e gerenciar suas tarefas.
 
+## Alunos 
+- Gabriel Forster Rocha
+- Pablo Arman Schuller
+
 ## Escopo do Projeto
 
 O **Todo List App** foi desenvolvido com o objetivo de fornecer uma interface fácil de usar para a criação e organização de tarefas. Ele permite que os usuários:
